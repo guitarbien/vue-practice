@@ -7,6 +7,8 @@
 </template>
 
 <script>
+import axios from 'axios';
+import twZipApi from './twZipApi';
 import TwZipSelect from './components/TwZipSelect.vue';
 
 const cities = [
@@ -55,11 +57,9 @@ export default {
   data: () => ({
     selectedCity: 0,
     selectedArea: 0,
+    cities: [{ name: '基隆市', areas: [{ name: '仁愛區', zip: '200' }] }],
   }),
   computed: {
-    cities() {
-      return cities;
-    },
     areas() {
       return this.cities[this.selectedCity].areas;
     },
@@ -71,6 +71,16 @@ export default {
     selectedCity() {
       this.selectedArea = 0;
     },
+  },
+  created() {
+    axios.get(twZipApi.endpoint)
+      .then((response) => {
+        console.log(response);
+        this.cities = response.data;
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   },
 };
 </script>
