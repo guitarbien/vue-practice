@@ -1,6 +1,7 @@
 <template>
   <label>
-    <select v-model="optionValue" @change="sendingEvent">
+    <select :value="value"
+            @input="$emit('input', $event.target.value)">
       <option v-for="(item, key) in list" :key="key" :value="key">{{ item.name }}</option>
     </select>
   </label>
@@ -9,17 +10,7 @@
 <script>
 export default {
   name: 'MySelect',
-  props: ['list'],
-  data() {
-    return {
-      optionValue: 0,
-    };
-  },
-  methods: {
-    sendingEvent() {
-      this.$emit('parent-change-city', this.optionValue);
-    },
-  },
+  props: ['value', 'list'],
 };
 </script>
 

@@ -1,7 +1,8 @@
 <template>
   <div id="app">
-    <TwZipSelect :list="cities" @parent-change-city="changeCity($event)"></TwZipSelect>
-    <TwZipSelect :list="areas"></TwZipSelect>
+    <TwZipSelect v-model="selectedCity" :list="cities"></TwZipSelect>
+    <TwZipSelect v-model="selectedArea" :list="areas"></TwZipSelect>
+    <br>郵遞區號：{{ selectedZipCode }}
   </div>
 </template>
 
@@ -52,17 +53,23 @@ export default {
     TwZipSelect,
   },
   data: () => ({
-    cities,
-    selected: 0,
+    selectedCity: 0,
+    selectedArea: 0,
   }),
-  methods: {
-    changeCity(index) {
-      this.selected = index;
+  computed: {
+    cities() {
+      return cities;
+    },
+    areas() {
+      return this.cities[this.selectedCity].areas;
+    },
+    selectedZipCode() {
+      return this.areas[this.selectedArea].zip;
     },
   },
-  computed: {
-    areas() {
-      return this.cities[this.selected].areas;
+  watch: {
+    selectedCity() {
+      this.selectedArea = 0;
     },
   },
 };
